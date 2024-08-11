@@ -140,7 +140,11 @@ public class Enemy : MonoBehaviour
                 break;
 
             case State.OFFENSIVE:
-                if (IsInPlayerDetectionRadius())
+                if (weaponType == WeaponType.NONE)
+                {
+                    Defend();  // Flee when the enemy has no weapons
+                }
+                else if (IsInPlayerDetectionRadius())
                 {
                     Attack();
                 }
