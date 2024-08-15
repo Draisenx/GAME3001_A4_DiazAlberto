@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
 
     //const float cooldownOffensive = 0.05f;
     //const float cooldownOffensive = 0.05f;
-    const float cooldownSniper = 0.75f;
+    const float cooldownSniper = 2.0f;
     const float cooldownShotgun = 0.25f;
 
     float neutralStateTimer = 0f;
@@ -278,8 +278,7 @@ public class Enemy : MonoBehaviour
     void Attack()
     {
         Debug.Log("Attacking");
-        Vector3 steeringForce = Vector2.zero;
-        steeringForce += Steering.Seek(rb, player.position, moveSpeed);
+        Vector3 steeringForce = Steering.Seek(rb, player.position, moveSpeed);
         rb.AddForce(steeringForce);
 
         Shoot();
@@ -288,15 +287,12 @@ public class Enemy : MonoBehaviour
     void Defend()
     {
         Debug.Log("Defending");
-        // Check if the enemy has no weapons
         if (!hasShotgun && !hasSniper)
         {
-            // Set the enemy color to blue
             color = Color.blue;
             GetComponent<SpriteRenderer>().color = color;
         }
-        Vector3 steeringForce = Vector2.zero;
-        steeringForce += Steering.Flee(rb, player.position, moveSpeed);
+        Vector3 steeringForce = Steering.Flee(rb, player.position, moveSpeed);
         rb.AddForce(steeringForce);
 
         Shoot();
@@ -372,15 +368,13 @@ public class Enemy : MonoBehaviour
                 color = Color.magenta;
                 waypoint = Utilities.NearestPosition(transform.position, waypoints);
                 break;
-
             case State.OFFENSIVE:
                 color = Color.red;
-                //shootCooldown.total = cooldownOffensive;
+                // Ensure the correct cooldown is set here
                 break;
-
             case State.DEFENSIVE:
                 color = Color.blue;
-                //shootCooldown.total = cooldownDefensive;
+                // Ensure the correct cooldown is set here
                 break;
         }
         GetComponent<SpriteRenderer>().color = color;
